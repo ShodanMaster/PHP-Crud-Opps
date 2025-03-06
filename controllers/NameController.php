@@ -1,6 +1,7 @@
 <?php
 
-require_once("models/NameModel.php");
+// include_once("../models/NameModel.php");
+include_once(__DIR__ . "/../models/NameModel.php");
 
 class NameController{
 
@@ -14,25 +15,19 @@ class NameController{
     }
 
     public function addName($name) {  
-        $this->nameModel->addName($name);
-    }
-
-
-    public function handleRequest() {
-        if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['submit'])) {
-            $name = $_POST['name'] ?? '';
-            echo $name;exit;
-            if (!empty($name)) {
-                $success = $this->addName($name);
-
-                if ($success) {
-                    header("Location: index.php?success=User Added");
-                    exit();
-                } else {
-                    header("Location: index.php?error=Failed to add user");
-                    exit();
-                }
-            }
+        $transaction = $this->nameModel->addName($name);
+    
+        if ($transaction) {
+            return [
+                'status' => 200,
+                'message' => 'Value Inserted!',
+            ];
         }
-    }
+    
+        return [
+            'status' => 400,
+            'message' => 'Value Not Inserted',
+        ];
+    }    
+
 }

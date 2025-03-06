@@ -21,26 +21,36 @@ class NameModel {
     }
 
     public function addName($name) {
-        $sql = "INSERT INTO names(name) values(?)";
-        $stmt = mysqli_prepare($this->conn, $sql);
-
-        if (!$stmt) {
-            die("Prepare failed: " . mysqli_error($this->conn));
+        // echo "Model: ".$name;exit;
+        try {
+            $this->conn->begin_transaction();
+    
+            $sql = "INSERT INTO names(name) VALUES(?)";
+            $stmt = mysqli_prepare($this->conn, $sql);
+    
+            if (!$stmt) {
+                throw new Exception("Prepare failed: " . mysqli_error($this->conn));
+            }
+    
+            mysqli_stmt_bind_param($stmt, "s", $name);
+            $result = mysqli_stmt_execute($stmt);
+    
+            if (!$result) {
+                throw new Exception("Insert failed: " . mysqli_error($this->conn));
+            }
+    
+            $this->conn->commit();
+            mysqli_stmt_close($stmt);
+    
+            return true;
+    
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            error_log("Database Error: " . $e->getMessage());
+            return false;
         }
-
-        mysqli_stmt_bind_param($stmt, "s", $name);
-        $result = mysqli_stmt_execute($stmt);
-
-        if (!$result) {
-            die("Insert failed: " . mysqli_error($this->conn));
-        }
-        mysqli_stmt_close($stmt);
-
-
-        return $result;
     }
+    
 }
-$controller = new NameController();
-$controller->handleRequest();
 
 ?>

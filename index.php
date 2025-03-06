@@ -1,12 +1,10 @@
 <?php 
 
 require_once("controllers/NameController.php");
-
-// Initialize UserController
 $userController = new NameController();
 $users = $userController->listUsers();
-?>
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +12,7 @@ $users = $userController->listUsers();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUD - OOP</title>
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <script src="js/sweetalert/sweetalert.min.js"></script>
 </head>
 <body>
 
@@ -33,7 +32,6 @@ $users = $userController->listUsers();
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -43,7 +41,6 @@ $users = $userController->listUsers();
                         <tr>
                             <td><?= htmlspecialchars($user['id']); ?></td>
                             <td><?= htmlspecialchars($user['name']); ?></td>
-                            <td><?= htmlspecialchars($user['email']); ?></td>
                             <td>
                                 <button class="btn btn-warning btn-sm">Edit</button>
                                 <button class="btn btn-danger btn-sm">Delete</button>
@@ -67,7 +64,7 @@ $users = $userController->listUsers();
                     <h1 class="modal-title fs-5" id="modalLabel">Add New User</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="controllers/UserController.php" method="POST">
+                <form id="nameForm" method="POST">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
@@ -76,13 +73,52 @@ $users = $userController->listUsers();
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" name="addUser" class="btn btn-primary">Save User</button>
+                        <button type="submit" class="btn btn-primary">Save User</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    <script src="js/jquery/jquery-3.6.0.min.js"></script>
     <script src="bootstrap/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).on('submit', '#nameForm',function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                type: "POST",
+                url: "actions/name.php?action=create",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.status === 200) {
+                        console.log(response);
+                        
+                        swal({
+                            title: "Success!",
+                            text: response.message,
+                            icon: "success",
+                            button: "OK",
+                        }).then(() => {
+                            $('#addUserModal').modal('hide');
+                            $('#nameForm')[0].reset();
+                            location.reload();
+                        });
+                    } else {
+                        swal({
+                            title: "Error!",
+                            text: response.message,
+                            icon: "error",
+                            button: "OK",
+                        });
+                    }
+                }
+
+            });
+        });
+    </script>
 </body>
 </html>
