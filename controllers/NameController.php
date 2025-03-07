@@ -30,4 +30,19 @@ class NameController{
         ];
     }    
 
+    public function updateName($id,$name) {
+
+        $transaction = $this->nameModel->updateName($id, $name);
+        if ($transaction) {
+            return [
+                'status'=> 200,
+                'message'=> 'Name Updated',
+            ];
+        }
+        return [
+            'status'=> 400,
+            'message'=> 'Name Not Upated',
+        ];
+    
+    }
 }

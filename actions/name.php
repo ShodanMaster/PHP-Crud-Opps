@@ -20,10 +20,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // echo $name;exit;
 
         $response = $nameController->addName($name);
-        // print_r($nameController);exit;
+        
+        header(('Content-Type: application/json'));
+        echo json_encode($response); 
+    }
+
+    if($action == 'update'){
+
+        $id = $_POST['id'];
+        $name = $_POST['name'];
+        // echo $name;exit;
+
+        $response = $nameController->updateName($id, $name);
+        
         header(('Content-Type: application/json'));
         echo json_encode($response); 
     }
 }
-// print_r($_REQUEST);
-// print_r($_POST);

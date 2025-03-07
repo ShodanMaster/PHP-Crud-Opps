@@ -21,7 +21,7 @@ $users = $userController->listUsers();
             <h1>CRUD - OOP</h1>
 
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
                 Add User
             </button>
         </div>
@@ -37,13 +37,13 @@ $users = $userController->listUsers();
             </thead>
             <tbody>
                 <?php if (!empty($users)): ?>
-                    <?php foreach ($users as $user): ?>
+                    <?php $num = 1; foreach ($users as $user): ?>
                         <tr>
-                            <td><?= htmlspecialchars($user['id']); ?></td>
+                            <td><?= htmlspecialchars($num++); ?></td>
                             <td><?= htmlspecialchars($user['name']); ?></td>
                             <td>
-                                <button class="btn btn-warning btn-sm">Edit</button>
-                                <button class="btn btn-danger btn-sm">Delete</button>
+                                <button class="updateName btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="<?= htmlspecialchars($user['id']); ?>" data-name="<?= htmlspecialchars($user['name']); ?>">Edit</button>
+                                <button class="btn btn-danger btn-sm" data-id="<?= htmlspecialchars($user['id']); ?>">Delete</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -56,12 +56,12 @@ $users = $userController->listUsers();
         </table>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <!-- Create Modal -->
+    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalLabel">Add New User</h1>
+                    <h1 class="modal-title fs-5" id="modalLabel">Add Name</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="nameForm" method="POST">
@@ -80,45 +80,34 @@ $users = $userController->listUsers();
         </div>
     </div>
 
+    <!-- Update Modal -->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalLabel">Update Name</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="udpateForm" method="POST">
+                    <input type="hidden" name="id" id="editId">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="editName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save User</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
     <script src="js/jquery/jquery-3.6.0.min.js"></script>
     <script src="bootstrap/bootstrap.bundle.min.js"></script>
-    <script>
-        $(document).on('submit', '#nameForm',function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-
-            $.ajax({
-                type: "POST",
-                url: "actions/name.php?action=create",
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    if (response.status === 200) {
-                        console.log(response);
-                        
-                        swal({
-                            title: "Success!",
-                            text: response.message,
-                            icon: "success",
-                            button: "OK",
-                        }).then(() => {
-                            $('#addUserModal').modal('hide');
-                            $('#nameForm')[0].reset();
-                            location.reload();
-                        });
-                    } else {
-                        swal({
-                            title: "Error!",
-                            text: response.message,
-                            icon: "error",
-                            button: "OK",
-                        });
-                    }
-                }
-
-            });
-        });
-    </script>
+    <script src="js/actions/name.js"></script>
 </body>
 </html>
