@@ -36,4 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header(('Content-Type: application/json'));
         echo json_encode($response); 
     }
+
+    if($action == 'delete'){
+
+        $id = $_POST['id'];
+        // echo $name;exit;
+
+        $response = $nameController->deleteName($id);
+        
+        header(('Content-Type: application/json'));
+        echo json_encode($response); 
+    }
 }

@@ -10,7 +10,7 @@ class NameController{
         $this->nameModel = new NameModel();
     }
 
-    public function listUsers() {
+    public function listNames() {
         return $this->nameModel->getNames();
     }
 
@@ -42,6 +42,22 @@ class NameController{
         return [
             'status'=> 400,
             'message'=> 'Name Not Upated',
+        ];
+    
+    }
+
+    public function deleteName($id) {
+
+        $transaction = $this->nameModel->deleteName($id);
+        if ($transaction) {
+            return [
+                'status'=> 200,
+                'message'=> 'Name Deleted',
+            ];
+        }
+        return [
+            'status'=> 400,
+            'message'=> 'Name Not Deleted',
         ];
     
     }

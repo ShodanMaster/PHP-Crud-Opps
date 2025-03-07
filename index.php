@@ -1,8 +1,8 @@
 <?php 
 
 require_once("controllers/NameController.php");
-$userController = new NameController();
-$users = $userController->listUsers();
+$nameController = new NameController();
+$names = $nameController->listNames();
 
 ?>
 <!DOCTYPE html>
@@ -22,11 +22,11 @@ $users = $userController->listUsers();
 
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
-                Add User
+                Add Name
             </button>
         </div>
 
-        <!-- Users Table -->
+        <!-- Names Table -->
         <table class="table table-bordered mt-3">
             <thead class="table-dark">
                 <tr>
@@ -36,14 +36,14 @@ $users = $userController->listUsers();
                 </tr>
             </thead>
             <tbody>
-                <?php if (!empty($users)): ?>
-                    <?php $num = 1; foreach ($users as $user): ?>
+                <?php if (!empty($names)): ?>
+                    <?php $num = 1; foreach ($names as $name): ?>
                         <tr>
                             <td><?= htmlspecialchars($num++); ?></td>
-                            <td><?= htmlspecialchars($user['name']); ?></td>
+                            <td><?= htmlspecialchars($name['name']); ?></td>
                             <td>
-                                <button class="updateName btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="<?= htmlspecialchars($user['id']); ?>" data-name="<?= htmlspecialchars($user['name']); ?>">Edit</button>
-                                <button class="btn btn-danger btn-sm" data-id="<?= htmlspecialchars($user['id']); ?>">Delete</button>
+                                <button class="updateName btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateModal" data-id="<?= htmlspecialchars($name['id']); ?>" data-name="<?= htmlspecialchars($name['name']); ?>">Edit</button>
+                                <button class="deleteName btn btn-danger btn-sm" data-id="<?= htmlspecialchars($name['id']); ?>">Delete</button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -73,7 +73,7 @@ $users = $userController->listUsers();
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save User</button>
+                        <button type="submit" class="btn btn-primary">Save Name</button>
                     </div>
                 </form>
             </div>
@@ -98,7 +98,7 @@ $users = $userController->listUsers();
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save User</button>
+                        <button type="submit" class="btn btn-primary">Update Name</button>
                     </div>
                 </form>
 

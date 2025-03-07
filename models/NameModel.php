@@ -79,6 +79,35 @@ class NameModel {
             return false;
         }
     }
+
+    public function deleteName($id) {
+        try {
+            $this->conn->begin_transaction();
+            $sql = "DELETE FROM names WHERE id = ?";
+            $stmt = mysqli_prepare($this->conn, $sql);
+
+            if (!$stmt) {
+                throw new Exception("Prepare Failed". mysqli_error($this->conn));
+            }
+
+            mysqli_stmt_bind_param($stmt,"d", $id);
+            $result = mysqli_stmt_execute($stmt); 
+
+            if (!$result) {
+                throw new Exception("Delete Failed". mysqli_error($this->conn));
+            }
+
+            $this->conn->commit();
+            mysqli_stmt_close($stmt);
+
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            error_log("Database Error". $e->getMessage());
+
+            return false;
+        }
+    }
 }
 
 ?>
