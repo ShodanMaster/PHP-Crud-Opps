@@ -12,7 +12,6 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 if (response.status === 200) {
-                    // console.log(response);
                     
                     swal({
                         title: "Success!",
@@ -39,13 +38,9 @@ $(document).ready(function () {
   
     $('.updateName').on('click', function(e){
         e.preventDefault();
-
-        console.log('button clicked');
         
         var id = $(this).data('id');
         var name = $(this).data('name');
-        
-        console.log(id, name);
         
         $('#editId').val(id);
         $('#editName').val(name);
@@ -63,7 +58,6 @@ $(document).ready(function () {
             processData: false,
             success: function (response) {
                 if (response.status === 200) {
-                    // console.log(response);
                     
                     swal({
                         title: "Success!",

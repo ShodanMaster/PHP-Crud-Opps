@@ -21,7 +21,6 @@ class NameModel {
     }
 
     public function addName($name) {
-        // echo "Model: ".$name;exit;
         try {
             $this->conn->begin_transaction();
     

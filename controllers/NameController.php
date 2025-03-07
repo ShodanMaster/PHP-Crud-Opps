@@ -1,6 +1,5 @@
 <?php
 
-// include_once("../models/NameModel.php");
 include_once(__DIR__ . "/../models/NameModel.php");
 
 class NameController{
